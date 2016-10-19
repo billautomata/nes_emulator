@@ -8,7 +8,7 @@ module.exports = function (grunt) {
   grunt.registerTask('default', ['browserify:main', 'standard:webapp', 'express', 'watch'])
 
   grunt.initConfig({
-   express: {
+    express: {
       options: { },
       dev: {
         options: {
@@ -24,7 +24,7 @@ module.exports = function (grunt) {
       },
       webapp: {
         src: [
-          './source/*.js', './webapp/**/*.js', './webapp/**/**/*.js'
+          './*.js', './webapp/**/*.js', './webapp/**/**/*.js'
         ]
       }
     },
@@ -45,13 +45,13 @@ module.exports = function (grunt) {
     // },
     watch: {
       client_js: {
-        files: ['./source/*.js', './webapp/*.js', './index.html' ],
+        files: [ './*.js', './source/*.js', './webapp/*.js', './index.html' ],
         tasks: ['standard:webapp'],
         options: {
           livereload: {
             port: 35729
           }
-        },
+        }
       }
     }
   })

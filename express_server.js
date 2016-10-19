@@ -7,8 +7,10 @@ var port = 60000
 var app = express()
 app.use(require('body-parser').json())
 
-var server = http.createServer(app).listen(port, function(){
+var server = http.createServer(app).listen(port, function () {
   console.log('listening on', port)
 })
+
+console.log(server)
 
 app.use(express.static(__dirname + '/'))
