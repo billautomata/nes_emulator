@@ -1,5 +1,5 @@
 $.ajax({
-    url: 'roms/compiled.nes',
+    url: 'roms/Super Mario Bros. (JU) (PRG0) [!].nes',
     xhr: function() {
         var xhr = $.ajaxSettings.xhr();
         if (typeof xhr.overrideMimeType !== 'undefined') {
