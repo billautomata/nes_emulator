@@ -6,6 +6,9 @@ document.body.appendChild(stats.dom)
 
 require('./utils.js')
 var poller = require('./logic_analyzer.js').poller
+var input_recorder = require('./input_recorder.js')()
+
+window.i = input_recorder
 
 var draw_memory = false
 
@@ -32,6 +35,7 @@ require('./load_romfile.js')(function () {
   function tick () {
     stats.begin()
     window.memory_changes = []
+    input_recorder.tick()
     window.nes.frame()
     if (draw_memory) {
       m.forEach(function (m, i) {
