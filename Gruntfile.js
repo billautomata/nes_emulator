@@ -5,7 +5,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-standard')
 
   // grunt.registerTask('serve', [ 'browserify', 'express:dev', 'watch'])
-  grunt.registerTask('default', ['browserify:main', 'standard:webapp', 'express', 'watch'])
+  grunt.registerTask('default', ['standard:webapp', 'express', 'watch'])
 
   grunt.initConfig({
     express: {
@@ -28,25 +28,25 @@ module.exports = function (grunt) {
         ]
       }
     },
-    // browserify: {
-    //   main: {
-    //     src: 'webapp/index.js',
-    //     dest: 'docs/js/build/viz.js',
-    //     files: {
-    //       'docs/js/build/viz.js': ['./webapp/*.js', './webapp/**/*.js', './webapp/**/**/*.js' ],
-    //     },
-    //     options: {
-    //       transform: ['brfs'],
-    //       browserifyOptions: {
-    //         debug: true
-    //       }
-    //     }
-    //   }
-    // },
+    browserify: {
+      main: {
+        src: 'webapp/index.js',
+        dest: 'viz/viz.js',
+        files: {
+          'viz/viz.js': ['./webapp/*.js', './webapp/**/*.js', './webapp/**/**/*.js' ],
+        },
+        options: {
+          transform: ['brfs'],
+          browserifyOptions: {
+            debug: true
+          }
+        }
+      }
+    },
     watch: {
       client_js: {
-        files: [ './*.js', './source/*.js', './webapp/*.js', './index.html' ],
-        tasks: ['standard:webapp'],
+        files: [ './source/*.js', './webapp/*.js', './index.html' ],
+        tasks: ['standard:webapp', 'browserify:main'],
         options: {
           livereload: {
             port: 35729

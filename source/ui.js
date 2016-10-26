@@ -44,7 +44,7 @@ if (typeof jQuery !== 'undefined') {
         }
 
         self.romContainer = $('<div class="nes-roms"></div>').appendTo(self.root)
-        self.romSelect = $('<select></select>').appendTo(self.romContainer)
+        // self.romSelect = $('<select></select>').appendTo(self.romContainer)
 
         self.controls = $('<div class="nes-controls"></div>').appendTo(self.root)
         self.buttons = {
@@ -59,9 +59,9 @@ if (typeof jQuery !== 'undefined') {
         /*
          * ROM loading
          */
-        self.romSelect.change(function () {
-          self.loadROM()
-        })
+        // self.romSelect.change(function () {
+        //   self.loadROM()
+        // })
 
         /*
          * Buttons
@@ -250,19 +250,19 @@ if (typeof jQuery !== 'undefined') {
         },
 
         setRoms: function (roms) {
-          this.romSelect.children().remove()
-          $('<option>Select a ROM...</option>').appendTo(this.romSelect)
-          for (var groupName in roms) {
-            if (roms.hasOwnProperty(groupName)) {
-              var optgroup = $('<optgroup></optgroup>').attr('label', groupName)
-              for (var i = 0; i < roms[groupName].length; i++) {
-                $('<option>' + roms[groupName][i][0] + '</option>')
-                  .attr('value', roms[groupName][i][1])
-                  .appendTo(optgroup)
-              }
-              this.romSelect.append(optgroup)
-            }
-          }
+          // this.romSelect.children().remove()
+          // $('<option>Select a ROM...</option>').appendTo(this.romSelect)
+          // for (var groupName in roms) {
+          //   if (roms.hasOwnProperty(groupName)) {
+          //     var optgroup = $('<optgroup></optgroup>').attr('label', groupName)
+          //     for (var i = 0; i < roms[groupName].length; i++) {
+          //       $('<option>' + roms[groupName][i][0] + '</option>')
+          //         .attr('value', roms[groupName][i][1])
+          //         .appendTo(optgroup)
+          //     }
+          //     this.romSelect.append(optgroup)
+          //   }
+          // }
         },
 
         writeAudio: function (samples) {

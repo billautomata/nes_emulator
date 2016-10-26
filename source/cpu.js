@@ -55,7 +55,7 @@ JSNES.CPU.prototype = {
   IRQ_RESET: 2,
 
   reset: function () {
-    // Main memory 
+    // Main memory
     this.mem = new Array(0x10000)
 
     for (var i = 0; i < 0x2000; i++) {
@@ -173,7 +173,7 @@ JSNES.CPU.prototype = {
     var addr = 0
     switch (addrMode) {
       case 0:{
-        // Zero Page mode. Use the address given after the opcode, 
+        // Zero Page mode. Use the address given after the opcode,
         // but without high byte.
         addr = this.load(opaddr + 2)
         break
@@ -191,12 +191,12 @@ JSNES.CPU.prototype = {
         // Ignore. Address is implied in instruction.
         break
       }case 3:{
-        // Absolute mode. Use the two bytes following the opcode as 
+        // Absolute mode. Use the two bytes following the opcode as
         // an address.
         addr = this.load16bit(opaddr + 2)
         break
       }case 4:{
-        // Accumulator mode. The address is in the accumulator 
+        // Accumulator mode. The address is in the accumulator
         // register.
         addr = this.REG_ACC
         break
@@ -205,19 +205,19 @@ JSNES.CPU.prototype = {
         addr = this.REG_PC
         break
       }case 6:{
-        // Zero Page Indexed mode, X as index. Use the address given 
+        // Zero Page Indexed mode, X as index. Use the address given
         // after the opcode, then add the
         // X register to it to get the final address.
         addr = (this.load(opaddr + 2) + this.REG_X) & 0xFF
         break
       }case 7:{
-        // Zero Page Indexed mode, Y as index. Use the address given 
+        // Zero Page Indexed mode, Y as index. Use the address given
         // after the opcode, then add the
         // Y register to it to get the final address.
         addr = (this.load(opaddr + 2) + this.REG_Y) & 0xFF
         break
       }case 8:{
-        // Absolute Indexed Mode, X as index. Same as zero page 
+        // Absolute Indexed Mode, X as index. Same as zero page
         // indexed, but with the high byte.
         addr = this.load16bit(opaddr + 2)
         if ((addr & 0xFF00) != ((addr + this.REG_X) & 0xFF00)) {
@@ -226,7 +226,7 @@ JSNES.CPU.prototype = {
         addr += this.REG_X
         break
       }case 9:{
-        // Absolute Indexed Mode, Y as index. Same as zero page 
+        // Absolute Indexed Mode, Y as index. Same as zero page
         // indexed, but with the high byte.
         addr = this.load16bit(opaddr + 2)
         if ((addr & 0xFF00) != ((addr + this.REG_Y) & 0xFF00)) {
@@ -235,9 +235,9 @@ JSNES.CPU.prototype = {
         addr += this.REG_Y
         break
       }case 10:{
-        // Pre-indexed Indirect mode. Find the 16-bit address 
+        // Pre-indexed Indirect mode. Find the 16-bit address
         // starting at the given location plus
-        // the current X register. The value is the contents of that 
+        // the current X register. The value is the contents of that
         // address.
         addr = this.load(opaddr + 2)
         if ((addr & 0xFF00) != ((addr + this.REG_X) & 0xFF00)) {
@@ -248,9 +248,9 @@ JSNES.CPU.prototype = {
         addr = this.load16bit(addr)
         break
       }case 11:{
-        // Post-indexed Indirect mode. Find the 16-bit address 
+        // Post-indexed Indirect mode. Find the 16-bit address
         // contained in the given location
-        // (and the one following). Add to that address the contents 
+        // (and the one following). Add to that address the contents
         // of the Y register. Fetch the value
         // stored at that adress.
         addr = this.load16bit(this.load(opaddr + 2))
@@ -260,7 +260,7 @@ JSNES.CPU.prototype = {
         addr += this.REG_Y
         break
       }case 12:{
-        // Indirect Absolute mode. Find the 16-bit address contained 
+        // Indirect Absolute mode. Find the 16-bit address contained
         // at the given location.
         addr = this.load16bit(opaddr + 2) // Find op
         if (addr < 0x1FFF) {
@@ -279,6 +279,8 @@ JSNES.CPU.prototype = {
     // ----------------------------------------------------------------------------------------------------
     // Decode & execute instruction:
     // ----------------------------------------------------------------------------------------------------
+
+
 
     // This should be compiled to a jump table.
     switch (opinf & 0xFF) {
@@ -1074,6 +1076,29 @@ JSNES.CPU.prototype = {
         }
 
     } // end of switch
+
+    // if(window.ops === undefined){
+    //   window.ops = []
+    // }
+    // if(window.ops.length < 1e6){
+    //   var o = {
+    //     op: opinf & 0xFF,
+    //     ad: addr,
+    //     rx: this.REG_X,
+    //     ry: this.REG_Y,
+    //     acc: this.REG_ACC
+    //   }
+    //   if(window.ops.length > 2){
+    //     if(areEqualShallow === undefined){
+    //       return
+    //     }
+    //     if(!areEqualShallow(window.ops[window.ops.length-1], o) && !areEqualShallow(window.ops[window.ops.length-2], o)){
+    //       window.ops.push(o)
+    //     }
+    //   } else {
+    //     window.ops.push(o)
+    //   }
+    // }
 
     return cycleCount
 
