@@ -38,14 +38,17 @@ require('./load_romfile.js')(function () {
   // add_poller({ name: 'enemy 0 type', addr: 0x0016 })
   // add_poller({ name: 'enemy 1 type', addr: 0x0017 })
   // add_poller({ name: 'player facing', addr: 0x0033 })
-  // add_poller({ name: '0x01', addr: 0x01 })
+  // add_poller({ name: '0x00', addr: 0x00 })
   // add_poller({ name: 'player position y', addr: 0xCE })
 
-  add_doper({ name: 'enemy 0 type', addr: 0x0016, value: 0x01 })
-  add_doper({ name: 'enemy 1 type', addr: 0x0017, value: 0x01 })
-  add_doper({ name: 'enemy 2 type', addr: 0x0018, value: 0x01 })
-  add_doper({ name: 'enemy 3 type', addr: 0x0019, value: 0x01 })
-  add_doper({ name: 'enemy 4 type', addr: 0x001A, value: 0x01 })
+  // add_doper({ name: 'enemy 0 type', addr: 0x0016, value: 0x01 })
+  // add_doper({ name: 'enemy 1 type', addr: 0x0017, value: 0x01 })
+  // add_doper({ name: 'enemy 2 type', addr: 0x0018, value: 0x01 })
+  // add_doper({ name: 'enemy 3 type', addr: 0x0019, value: 0x01 })
+  // add_doper({ name: 'enemy 4 type', addr: 0x001A, value: 0x01 })
+  // add_doper({ name: 'powerup on screen', addr: 0x1B, value: 0x00, active: false })
+  // add_doper({ name: 'test', addr: 0x00, value: 0x248 })
+
   // add_doper({ name: 'all powerups star', addr: 0x0039, value: 0x02, active: false })
 
   // add_doper({
@@ -54,18 +57,26 @@ require('./load_romfile.js')(function () {
   //   value: 0x3
   // })
 
+  window.memory_changes = []
+
   window.i.load()
   window.i.play()
+  // window.i.ffw(400)
+  // window.i.pause()
 
   tick()
   // setInterval(tick, 16)
   function tick () {
     stats.begin()
-    var n_frames_per_tick = 50
+    var n_frames_per_tick = 1
     while(n_frames_per_tick--){
       if (input_recorder.active()) {
         window.memory_changes = []
         input_recorder.tick()
+        dopers.forEach(function (d) {
+          d.tick()
+        })
+
         window.nes.frame()
 
         if (draw_memory) {

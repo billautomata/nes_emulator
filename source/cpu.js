@@ -1101,7 +1101,7 @@ JSNES.CPU.prototype = {
 
   write: function (addr, val) {
     if (addr < 0x2000) {
-      window.memory_changes.push(['read', addr & 0x7FF, val])
+      // window.memory_changes.push(['write', addr & 0x7FF, val])
       this.mem[addr & 0x7FF] = val
     } else {
       this.nes.mmap.write(addr, val)

@@ -22,6 +22,7 @@ module.exports = function input_recorder () {
   var scale_x = d3.scaleLinear().domain([0, input_frames.length]).range([0, w])
 
   var div_status = div_parent.append('div').html('status: ').append('span').html('--')
+  var div_framecount = div_parent.append('div').html('frame: ').append('span').html('--')
 
   var div_controls = div_parent.append('div')
   div_controls.append('button').html('restart').on('click', function () {
@@ -33,6 +34,25 @@ module.exports = function input_recorder () {
   div_controls.append('button').html('unpause').on('click', function () {
     unpause()
   })
+  div_controls.append('button').html('>>').on('click', function () {
+    isRunning = true
+    isPlaying = true
+    window.memory_changes = []
+    tick()
+    window.nes.frame()
+    isRunning = false
+  })
+
+  function ffw (frame) {
+    isRunning = true
+    isPlaying = true
+    while(current_frame < frame){
+      window.memory_changes = []
+      console.log(current_frame)
+      tick()
+      window.nes.frame()
+    }
+  }
 
   function record () {
     isRunning = true
@@ -61,6 +81,7 @@ module.exports = function input_recorder () {
     isPlaying = true
     isRunning = true
     div_status.html('playing')
+
   }
 
   function push_state (state) {
@@ -81,6 +102,7 @@ module.exports = function input_recorder () {
     current_frame = 0
   }
   function tick () {
+    div_framecount.html(current_frame)
     if (isRunning) {
       if (isRecording) {
         var o = []
@@ -113,6 +135,9 @@ module.exports = function input_recorder () {
     stop: stop,
     save: save,
     load: load,
+    ffw: ffw,
+    pause: pause,
+    unpause: unpause,
     active: function () { return isRunning }
   }
 
