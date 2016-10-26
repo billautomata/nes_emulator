@@ -1,4 +1,8 @@
 var d3 = require('d3')
+var Stats = require('stats.js')
+var stats = new Stats()
+stats.showPanel(0)
+document.body.appendChild(stats.dom)
 
 require('./utils.js')
 
@@ -6,12 +10,13 @@ require('./load_romfile.js')(function () {
   // window.nes.start()
 
   var n_memory_elements = 2048 // 2k
-  var mem_width = 128
+  var mem_width = 64
   var div_memory = d3.select('div#memory')
   var svg = div_memory.append('svg')
     .attr('viewBox', [0, 0, mem_width, n_memory_elements / mem_width].join(' '))
     .attr('preserveApsectRatio', 'xMidYMid')
     .attr('width', '100%')
+    .style('background-color', 'black')
 
   // var scale_x = d3.scaleLinear().domain([0, mem_width]).range([])
 
@@ -96,6 +101,7 @@ require('./load_romfile.js')(function () {
   // draw the memory
   tick()
   function tick () {
+    stats.begin()
     window.memory_changes = []
     window.nes.frame()
     m.forEach(function (m, i) {
@@ -104,6 +110,7 @@ require('./load_romfile.js')(function () {
     pollers.forEach(function (p) {
       p()
     })
+    stats.end()
     window.requestAnimationFrame(tick)
   }
 
