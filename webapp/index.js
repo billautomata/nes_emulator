@@ -27,11 +27,13 @@ require('./load_romfile.js')(function () {
   }
 
   // draw the memory
-  setInterval(function () {
+  tick()
+  function tick () {
     window.nes.frame()
     m.forEach(function (m, i) {
       m.attr('fill', d3.rgb(window.nes.cpu.mem[i], window.nes.cpu.mem[i], window.nes.cpu.mem[i]))
     })
-  }, 14)
+    window.requestAnimationFrame(tick)
+  }
 
 })

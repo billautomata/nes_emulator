@@ -31,7 +31,7 @@ var JSNES = function (opts) {
   this.mmap = null; // set in loadRom()
   this.keyboard = new JSNES.Keyboard()
 
-  this.ui.updateStatus('Ready to load a ROM.')
+  // this.ui.updateStatus('Ready to load a ROM.')
 }
 
 // JSNES.VERSION = "<%= version %>"
@@ -163,7 +163,7 @@ JSNES.prototype = {
       this.stop()
     }
 
-    this.ui.updateStatus('Loading ROM...')
+    // this.ui.updateStatus('Loading ROM...')
 
     // Load ROM file:
     this.rom = new JSNES.ROM(this)
@@ -179,7 +179,7 @@ JSNES.prototype = {
       this.ppu.setMirroring(this.rom.getMirroringType())
       this.romData = data
 
-      this.ui.updateStatus('Successfully loaded. Ready to be started.')
+      // this.ui.updateStatus('Successfully loaded. Ready to be started.')
     } else {
       this.ui.updateStatus('Invalid ROM!')
     }
