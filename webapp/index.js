@@ -76,17 +76,6 @@ require('./load_romfile.js')(function () {
       if (current_sample_idx > samples.length - 1) {
         current_sample_idx = 0
       }
-
-    // iterate over the buffer, and graph the value when it changes
-    // c = -1
-    // changes = []
-    // samples.forEach(function (s, idx) {
-    //   circles[idx].attr('cy', scale_y(s))
-    // // if (s !== c) {
-    // //   c = s
-    // // changes.push([c, idx])
-    // // }
-    // })
     }
     return tick
   }
