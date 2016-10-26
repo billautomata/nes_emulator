@@ -1077,35 +1077,13 @@ JSNES.CPU.prototype = {
 
     } // end of switch
 
-    // if(window.ops === undefined){
-    //   window.ops = []
-    // }
-    // if(window.ops.length < 1e6){
-    //   var o = {
-    //     op: opinf & 0xFF,
-    //     ad: addr,
-    //     rx: this.REG_X,
-    //     ry: this.REG_Y,
-    //     acc: this.REG_ACC
-    //   }
-    //   if(window.ops.length > 2){
-    //     if(areEqualShallow === undefined){
-    //       return
-    //     }
-    //     if(!areEqualShallow(window.ops[window.ops.length-1], o) && !areEqualShallow(window.ops[window.ops.length-2], o)){
-    //       window.ops.push(o)
-    //     }
-    //   } else {
-    //     window.ops.push(o)
-    //   }
-    // }
-
     return cycleCount
 
   },
 
   load: function (addr) {
     if (addr < 0x2000) {
+      window.memory_changes.push(['read', addr & 0x7FF, this.mem[addr & 0x7FF]])
       return this.mem[addr & 0x7FF]
     } else {
       return this.nes.mmap.load(addr)
@@ -1123,6 +1101,7 @@ JSNES.CPU.prototype = {
 
   write: function (addr, val) {
     if (addr < 0x2000) {
+      window.memory_changes.push(['read', addr & 0x7FF, val])
       this.mem[addr & 0x7FF] = val
     } else {
       this.nes.mmap.write(addr, val)

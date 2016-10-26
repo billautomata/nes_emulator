@@ -6,7 +6,7 @@ require('./load_romfile.js')(function () {
   // window.nes.start()
 
   var n_memory_elements = 2048 // 2k
-  var mem_width = 64
+  var mem_width = 128
   var div_memory = d3.select('div#memory')
   var svg = div_memory.append('svg')
     .attr('viewBox', [0, 0, mem_width, n_memory_elements / mem_width].join(' '))
@@ -87,15 +87,16 @@ require('./load_romfile.js')(function () {
 
   window.add_poller = add_poller
 
-  add_poller({ name: 'enemy 0 type', addr: 0x0016 })
-  add_poller({ name: 'enemy 1 type', addr: 0x0017 })
-  add_poller({ name: 'player facing', addr: 0x0033 })
-  add_poller({ name: '0x01', addr: 0x01 })
-  add_poller({ name: 'player position y', addr: 0xCE })
+  // add_poller({ name: 'enemy 0 type', addr: 0x0016 })
+  // add_poller({ name: 'enemy 1 type', addr: 0x0017 })
+  // add_poller({ name: 'player facing', addr: 0x0033 })
+  // add_poller({ name: '0x01', addr: 0x01 })
+  // add_poller({ name: 'player position y', addr: 0xCE })
 
   // draw the memory
   tick()
   function tick () {
+    window.memory_changes = []
     window.nes.frame()
     m.forEach(function (m, i) {
       m.attr('fill', d3.rgb(window.nes.cpu.mem[i], window.nes.cpu.mem[i], window.nes.cpu.mem[i]))
