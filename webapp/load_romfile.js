@@ -24,7 +24,8 @@ module.exports = function (callback) {
         data = xhr.responseText
       }
       console.log('got mario data')
-      window.nes.loadRom(data)
+      window.romdata = data
+      window.nes.loadRom(window.romdata)
       callback()
     }
   })

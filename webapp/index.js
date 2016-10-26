@@ -6,9 +6,14 @@ document.body.appendChild(stats.dom)
 
 require('./utils.js')
 var poller = require('./logic_analyzer.js').poller
+var doper = require('./doper.js')
 var input_recorder = require('./input_recorder.js')()
 
 window.i = input_recorder
+
+if (window.localStorage.getItem('input_dvr') === null) {
+  window.localStorage.setItem('input_dvr', JSON.stringify(require('../runs/example_run.json')))
+}
 
 var draw_memory = false
 
@@ -21,8 +26,14 @@ require('./load_romfile.js')(function () {
   function add_poller (options) {
     pollers.push(poller(options))
   }
-
   window.add_poller = add_poller
+
+  var dopers = []
+  function add_doper (options) {
+    var d = doper(options)
+    // d.start()
+    dopers.push(d)
+  }
 
   // add_poller({ name: 'enemy 0 type', addr: 0x0016 })
   // add_poller({ name: 'enemy 1 type', addr: 0x0017 })
@@ -30,21 +41,46 @@ require('./load_romfile.js')(function () {
   // add_poller({ name: '0x01', addr: 0x01 })
   // add_poller({ name: 'player position y', addr: 0xCE })
 
-  // draw the memory
+  add_doper({ name: 'enemy 0 type', addr: 0x0016, value: 0x01 })
+  add_doper({ name: 'enemy 1 type', addr: 0x0017, value: 0x01 })
+  add_doper({ name: 'enemy 2 type', addr: 0x0018, value: 0x01 })
+  add_doper({ name: 'enemy 3 type', addr: 0x0019, value: 0x01 })
+  add_doper({ name: 'enemy 4 type', addr: 0x001A, value: 0x01 })
+  // add_doper({ name: 'all powerups star', addr: 0x0039, value: 0x02, active: false })
+
+  // add_doper({
+  //   name: 'power up state',
+  //   addr: 0x756,
+  //   value: 0x3
+  // })
+
+  window.i.load()
+  window.i.play()
+
   tick()
+  // setInterval(tick, 16)
   function tick () {
     stats.begin()
-    window.memory_changes = []
-    input_recorder.tick()
-    window.nes.frame()
-    if (draw_memory) {
-      m.forEach(function (m, i) {
-        m.attr('fill', d3.rgb(window.nes.cpu.mem[i], window.nes.cpu.mem[i], window.nes.cpu.mem[i]))
-      })
+    var n_frames_per_tick = 50
+    while(n_frames_per_tick--){
+      if (input_recorder.active()) {
+        window.memory_changes = []
+        input_recorder.tick()
+        window.nes.frame()
+
+        if (draw_memory) {
+          m.forEach(function (m, i) {
+            m.attr('fill', d3.rgb(window.nes.cpu.mem[i], window.nes.cpu.mem[i], window.nes.cpu.mem[i]))
+          })
+        }
+        pollers.forEach(function (p) {
+          p()
+        })
+        dopers.forEach(function (d) {
+          d.tick()
+        })
+      }
     }
-    pollers.forEach(function (p) {
-      p()
-    })
     stats.end()
     window.requestAnimationFrame(tick)
   }

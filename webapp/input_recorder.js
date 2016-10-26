@@ -1,3 +1,4 @@
+var d3 = require('d3')
 module.exports = function input_recorder () {
   var nes_state = ''
   var input_frames = []
@@ -7,23 +8,59 @@ module.exports = function input_recorder () {
   var isPlaying = false
   var isRecording = false
 
+  var div_parent = d3.select('div#input_recorder')
+
+  var w = 100
+  var h = 2
+  var svg = div_parent.append('svg')
+    .attr('viewBox', [ 0, 0, w, h ].join(' '))
+    .attr('preserveApsectRatio', 'xMidYMid')
+    .attr('width', '100%')
+    .style('outline', '1px solid black')
+
+  var play_head = svg.append('rect').attr('x', 0).attr('y', 0).attr('width', 0).attr('height', h)
+  var scale_x = d3.scaleLinear().domain([0, input_frames.length]).range([0, w])
+
+  var div_status = div_parent.append('div').html('status: ').append('span').html('--')
+
+  var div_controls = div_parent.append('div')
+  div_controls.append('button').html('restart').on('click', function () {
+    play()
+  })
+  div_controls.append('button').html('pause').on('click', function () {
+    pause()
+  })
+  div_controls.append('button').html('unpause').on('click', function () {
+    unpause()
+  })
+
   function record () {
     isRunning = true
     isRecording = true
     nes_state = JSON.stringify(window.nes.toJSON())
     input_frames = []
     current_frame = 0
+    div_status.html('recording')
   }
+  function pause () {
+    isRunning = false
+  }
+  function unpause () {
+    isRunning = true
+  }
+
   function stop () {
     isRunning = false
     isPlaying = false
     isRecording = false
+    div_status.html('stopped')
   }
   function play () {
     window.nes.fromJSON(JSON.parse(nes_state))
     current_frame = 0
     isPlaying = true
     isRunning = true
+    div_status.html('playing')
   }
 
   function push_state (state) {
@@ -40,7 +77,8 @@ module.exports = function input_recorder () {
     var input_dvr = JSON.parse(window.localStorage.getItem('input_dvr'))
     nes_state = input_dvr.nes_state
     input_frames = input_dvr.input_frames
-    play()
+    scale_x = d3.scaleLinear().domain([0, input_frames.length]).range([0, w])
+    current_frame = 0
   }
   function tick () {
     if (isRunning) {
@@ -53,11 +91,17 @@ module.exports = function input_recorder () {
         current_frame += 1
       } else if (isPlaying) {
         if (current_frame < input_frames.length) {
+          play_head.attr('width', scale_x(current_frame))
           input_frames[current_frame].forEach(function (v, idx) {
             window.nes.keyboard.state1[idx] = v
           })
+          current_frame += 1
+        } else {
+          setTimeout(function () {
+            // load()
+            play()
+          }, 0)
         }
-        current_frame += 1
       }
     }
   }
@@ -68,7 +112,8 @@ module.exports = function input_recorder () {
     record: record,
     stop: stop,
     save: save,
-    load: load
+    load: load,
+    active: function () { return isRunning }
   }
 
 }
