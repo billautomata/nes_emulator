@@ -24,7 +24,7 @@ module.exports = function (grunt) {
       },
       webapp: {
         src: [
-          './*.js', './webapp/**/*.js', './webapp/**/**/*.js'
+          './webapp/**/*.js', './webapp/**/**/*.js'
         ]
       }
     },
