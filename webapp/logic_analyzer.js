@@ -38,7 +38,7 @@ function poller (options) {
       .attr('cx', scale_x(i))
       .attr('cy', scale_y(0))
       .attr('r', 0.5)
-      .attr('fill', 'blue'))
+      .attr('fill', 'rgb(33,66,255)'))
     values.push(svg.append('text')
       .attr('x', scale_x(i))
       .attr('y', scale_y(0))
@@ -50,9 +50,10 @@ function poller (options) {
 
   }
 
-  function tick () {
+  function tick (v) {
+    // console.log(v)
     // sample
-    samples[current_sample_idx] = window.nes.cpu.mem[options.addr]
+    samples[current_sample_idx] = v
     circles[current_sample_idx].attr('cy', scale_y(samples[current_sample_idx]))
     values[current_sample_idx].attr('y', scale_y(samples[current_sample_idx]))
     values[current_sample_idx].text(samples[current_sample_idx])

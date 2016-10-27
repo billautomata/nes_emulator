@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- <html lang="en"> -->
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> -->
     <title>nes emulator</title>
     <style>
       .nes-screen {
@@ -22,12 +22,10 @@
         padding-bottom: 4px;
         background-color: rgba(0,0,0,0.1);
       }
-
       #dopers {
         width: 49%;
         float: right;
       }
-
     </style>
 </head>
 
@@ -101,40 +99,7 @@
     <script type="text/javascript" charset="utf-8">
         var nes;
         $(function() {
-            nes = new JSNES({
-                'ui': $('#emulator').JSNESUI({
-                    "Homebrew": [
-                        ['Concentration Room', 'roms/croom/croom.nes'],
-                        ['LJ65', 'roms/lj65/lj65.nes'],
-                    ],
-                    "Working": [
-                        ['Bubble Bobble', 'roms/Bubble Bobble (U).nes'],
-
-                        ['Contra', 'roms/Contra (U) [!].nes'],
-                        ['Donkey Kong', 'roms/Donkey Kong (JU).nes'],
-                        ['Dr. Mario', 'roms/Dr. Mario (JU).nes'],
-                        ['Golf', 'roms/Golf (JU).nes'],
-                        ['The Legend of Zelda', 'roms/Legend of Zelda, The (U) (PRG1).nes'],
-                        ['Lemmings', 'roms/Lemmings (U).nes'],
-                        ['Lifeforce', 'roms/Lifeforce (U).nes'],
-
-                        ['Mario Bros.', 'roms/Mario Bros. (JU) [!].nes'],
-                        ['Mega Man', 'roms/Mega Man (U).nes'],
-                        ['Pac-Man', 'roms/Pac-Man (U) [!].nes'],
-                        ['Super Mario Bros.', 'roms/Super Mario Bros. (JU) (PRG0) [!].nes'],
-                        ['Tennis', 'roms/Tennis (JU) [!].nes'],
-                        ['Tetris', 'roms/Tetris (U) [!].nes'],
-                        ['Tetris 2', 'roms/Tetris 2 (U) [!].nes'],
-                        ['Zelda II - The Adventure of Link', 'roms/Zelda II - The Adventure of Link (U).nes']
-                    ],
-
-                    "Nearly Working": [
-                        ['Duck Hunt', 'roms/Duck Hunt (JUE) [!].nes'],
-                        ['Super Mario Bros. 3', 'roms/Super Mario Bros. 3 (U) (PRG1) [!].nes']
-                    ]
-                })
-            });
-            // console.log('here')
+          nes = new JSNES({ 'ui': $('#emulator').JSNESUI({}) });
         });
     </script>
     <script src='viz/viz.js'></script>

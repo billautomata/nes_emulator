@@ -16,21 +16,21 @@ module.exports = function doper (options) {
   div_parent.style('background-color', 'rgba(255,0,0,0.1)')
 
   div_parent.append('div').html(options.name)
-  div_parent.append('div').html(['addr', options.addr.toString(16)].join(' '))
+  div_parent.append('div').html(['addr', options.addr.toString(10)].join(' '))
   var input = div_parent.append('input')
     .attr('type', 'text')
     .property('value', options.value)
 
-  // input.on('keydown', function () {
-    // if (d3.event.code === 'Enter') {
-    //   value = input.property('value')
-    // }
-    // })
-
-  input.on('click', function () {
-    // d3.event.stopPropagation()
-    // d3.event.preventDefault()
+  input.on('keydown', function () {
+    if (d3.event.code === 'Enter') {
+      value = input.property('value')
+    }
   })
+
+  // input.on('click', function () {
+  // d3.event.stopPropagation()
+  // d3.event.preventDefault()
+  // })
 
   div_parent.append('button').html('x').on('click', function () {
     if (isRunning) {
@@ -38,6 +38,15 @@ module.exports = function doper (options) {
     } else {
       start()
     }
+  })
+
+  div_parent.append('button').html('-').on('click', function () {
+    value = Number(value) - 1
+    input.property('value', value)
+  })
+  div_parent.append('button').html('+').on('click', function () {
+    value = Number(value) + 1
+    input.property('value', value)
   })
 
   if (options.active !== undefined) {
