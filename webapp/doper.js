@@ -17,9 +17,22 @@ module.exports = function doper (options) {
 
   div_parent.append('div').html(options.name)
   div_parent.append('div').html(['addr', options.addr.toString(16)].join(' '))
-  div_parent.append('input').property('value', options.value)
+  var input = div_parent.append('input')
+    .attr('type', 'text')
+    .property('value', options.value)
 
-  div_parent.on('click', function () {
+  // input.on('keydown', function () {
+    // if (d3.event.code === 'Enter') {
+    //   value = input.property('value')
+    // }
+    // })
+
+  input.on('click', function () {
+    // d3.event.stopPropagation()
+    // d3.event.preventDefault()
+  })
+
+  div_parent.append('button').html('x').on('click', function () {
     if (isRunning) {
       stop()
     } else {
@@ -33,11 +46,11 @@ module.exports = function doper (options) {
     start()
   }
 
-  function tick () {
-    if (isRunning) {
-      window.nes.cpu.mem[addr] = value
-    }
-  }
+  // function tick () {
+  // if (isRunning) {
+  //   window.nes.cpu.mem[addr] = value
+  // }
+  // }
   function start () {
     div_parent.style('background-color', 'rgba(0,255,0,0.1)')
     isRunning = true
@@ -48,8 +61,9 @@ module.exports = function doper (options) {
   }
 
   return {
-    tick: tick,
     start: start,
-    stop: stop
+    stop: stop,
+    status: function () { return isRunning },
+    value: function () { return value }
   }
 }

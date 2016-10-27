@@ -165,9 +165,9 @@ if (typeof jQuery !== 'undefined') {
         /*
          * Sound
          */
-        self.dynamicaudio = new window.DynamicAudio({
-          swf: nes.opts.swfPath + 'dynamicaudio.swf'
-        })
+        // self.dynamicaudio = new window.DynamicAudio({
+        //   swf: nes.opts.swfPath + 'dynamicaudio.swf'
+        // })
       }
 
       UI.prototype = {

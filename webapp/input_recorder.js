@@ -7,6 +7,7 @@ module.exports = function input_recorder () {
   var isRunning = false
   var isPlaying = false
   var isRecording = false
+  var isInControl = true
 
   var div_parent = d3.select('div#input_recorder')
 
@@ -34,6 +35,13 @@ module.exports = function input_recorder () {
   div_controls.append('button').html('unpause').on('click', function () {
     unpause()
   })
+  div_controls.append('button').html('player control off').on('click', function () {
+    off()
+  })
+  div_controls.append('button').html('player control on').on('click', function () {
+    on()
+  })
+
   div_controls.append('button').html('>>').on('click', function () {
     isRunning = true
     isPlaying = true
@@ -81,7 +89,19 @@ module.exports = function input_recorder () {
     isPlaying = true
     isRunning = true
     div_status.html('playing')
+  }
 
+  function off () {
+    pause()
+    isInControl = false
+    window.nes.keyboard.state1.forEach(function (v, idx) {
+      window.nes.keyboard.state1[idx] = 0
+    })
+  }
+
+  function on () {
+    isInControl = true
+    unpause()
   }
 
   function push_state (state) {
@@ -138,6 +158,8 @@ module.exports = function input_recorder () {
     ffw: ffw,
     pause: pause,
     unpause: unpause,
+    off: off,
+    on: on,
     active: function () { return isRunning }
   }
 

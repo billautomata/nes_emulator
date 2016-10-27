@@ -15,7 +15,7 @@ if (window.localStorage.getItem('input_dvr') === null) {
   window.localStorage.setItem('input_dvr', JSON.stringify(require('../runs/example_run.json')))
 }
 
-var draw_memory = false
+var draw_memory = true
 
 require('./load_romfile.js')(function () {
   // main function
@@ -28,18 +28,28 @@ require('./load_romfile.js')(function () {
   }
   window.add_poller = add_poller
 
-  var dopers = []
+  window.dopers = {}
   function add_doper (options) {
     var d = doper(options)
-    // d.start()
-    dopers.push(d)
+    window.dopers[options.addr] = d
+  // d.start()
+  // dopers.push(d)
   }
 
-  // add_poller({ name: 'enemy 0 type', addr: 0x0016 })
-  // add_poller({ name: 'enemy 1 type', addr: 0x0017 })
-  // add_poller({ name: 'player facing', addr: 0x0033 })
-  // add_poller({ name: '0x00', addr: 0x00 })
-  // add_poller({ name: 'player position y', addr: 0xCE })
+  function add_both (options) {
+    add_doper(options)
+    add_poller(options)
+  }
+
+  add_poller({ name: 'current probe', addr: 1750 })
+  add_both({ name: 'mario draw state', addr: 1749, value: 97 })
+
+  // crap
+  // add_both({ name: 'unknown', addr: 1922, value: 24 })
+
+  // found hacks
+
+  // add_both({ name: 'player position y', addr: 0xCE, value: 32, active: false })
 
   // add_doper({ name: 'enemy 0 type', addr: 0x0016, value: 0x01 })
   // add_doper({ name: 'enemy 1 type', addr: 0x0017, value: 0x01 })
@@ -47,9 +57,10 @@ require('./load_romfile.js')(function () {
   // add_doper({ name: 'enemy 3 type', addr: 0x0019, value: 0x01 })
   // add_doper({ name: 'enemy 4 type', addr: 0x001A, value: 0x01 })
   // add_doper({ name: 'powerup on screen', addr: 0x1B, value: 0x00, active: false })
-  // add_doper({ name: 'test', addr: 0x00, value: 0x248 })
-
   // add_doper({ name: 'all powerups star', addr: 0x0039, value: 0x02, active: false })
+  // add_both({ name: 'sprite x position', addr: 942, value: 96 })
+  // add_both({ name: 'disable jump', addr: 1075, value: 255 })
+  // add_both({ name: 'lock clock', addr: 1927, value: 24, })  // change to any value to lock the clock value
 
   // add_doper({
   //   name: 'power up state',
@@ -61,21 +72,19 @@ require('./load_romfile.js')(function () {
 
   window.i.load()
   window.i.play()
-  // window.i.ffw(400)
+  window.i.ffw(150)
+  // window.i.off()
   // window.i.pause()
 
   tick()
   // setInterval(tick, 16)
   function tick () {
     stats.begin()
-    var n_frames_per_tick = 1
+    var n_frames_per_tick = 4
     while(n_frames_per_tick--){
       if (input_recorder.active()) {
         window.memory_changes = []
         input_recorder.tick()
-        dopers.forEach(function (d) {
-          d.tick()
-        })
 
         window.nes.frame()
 
@@ -84,13 +93,12 @@ require('./load_romfile.js')(function () {
             m.attr('fill', d3.rgb(window.nes.cpu.mem[i], window.nes.cpu.mem[i], window.nes.cpu.mem[i]))
           })
         }
-        pollers.forEach(function (p) {
-          p()
-        })
-        dopers.forEach(function (d) {
-          d.tick()
-        })
+      } else {
+        window.nes.frame()
       }
+      pollers.forEach(function (p) {
+        p()
+      })
     }
     stats.end()
     window.requestAnimationFrame(tick)

@@ -1084,7 +1084,11 @@ JSNES.CPU.prototype = {
   load: function (addr) {
     if (addr < 0x2000) {
       window.memory_changes.push(['read', addr & 0x7FF, this.mem[addr & 0x7FF]])
-      return this.mem[addr & 0x7FF]
+      if(window.dopers[addr & 0x7FF] !== undefined && window.dopers[addr & 0x7FF].status()){
+        return window.dopers[addr & 0x7FF].value()
+      } else {
+        return this.mem[addr & 0x7FF]
+      }
     } else {
       return this.nes.mmap.load(addr)
     }
@@ -1101,8 +1105,11 @@ JSNES.CPU.prototype = {
 
   write: function (addr, val) {
     if (addr < 0x2000) {
-      // window.memory_changes.push(['write', addr & 0x7FF, val])
-      this.mem[addr & 0x7FF] = val
+      if(window.dopers[addr & 0x7FF] !== undefined && window.dopers[addr & 0x7FF].status()){
+        this.mem[addr & 0x7FF] = window.dopers[addr & 0x7FF].value()
+      } else {
+        this.mem[addr & 0x7FF] = val
+      }
     } else {
       this.nes.mmap.write(addr, val)
     }

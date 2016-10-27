@@ -28,9 +28,10 @@ function poller (options) {
     .attr('font-size', '1px')
 
   var scale_x = d3.scaleLinear().domain([0, options.n_samples]).range([1, w])
-  var scale_y = d3.scaleLinear().domain([0, 255]).range([h, 0])
+  var scale_y = d3.scaleLinear().domain([0, 255]).range([h - 1, 1])
 
   var circles = []
+  var values = []
 
   for (var i = 0; i < options.n_samples; i++) {
     circles.push(svg.append('circle')
@@ -38,13 +39,24 @@ function poller (options) {
       .attr('cy', scale_y(0))
       .attr('r', 0.5)
       .attr('fill', 'blue'))
+    values.push(svg.append('text')
+      .attr('x', scale_x(i))
+      .attr('y', scale_y(0))
+      .attr('dy', '0.33em')
+      .attr('text-anchor', 'middle')
+      .attr('fill', 'white')
+      .attr('font-size', '0.3px')
+    )
+
   }
 
   function tick () {
     // sample
     samples[current_sample_idx] = window.nes.cpu.mem[options.addr]
     circles[current_sample_idx].attr('cy', scale_y(samples[current_sample_idx]))
-    txt.text([options.name, samples[current_sample_idx]].join(' = '))
+    values[current_sample_idx].attr('y', scale_y(samples[current_sample_idx]))
+    values[current_sample_idx].text(samples[current_sample_idx])
+    // txt.text([options.name, samples[current_sample_idx]].join(' = '))
     current_sample_idx += 1
     if (current_sample_idx > samples.length - 1) {
       current_sample_idx = 0

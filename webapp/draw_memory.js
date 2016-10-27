@@ -18,11 +18,16 @@ function draw_memory () {
   for (var i = 0; i < n_memory_elements; i++) {
     var y = Math.floor(i / mem_width)
     var x = i - (y * mem_width)
-    m.push(svg.append('rect').attr('x', x)
+    var rect = svg.append('rect').attr('x', x)
       .attr('y', y)
       .attr('width', 1)
       .attr('height', 1)
-      .attr('stroke', 'none'))
+      .attr('stroke', 'none')
+      .datum(i)
+    rect.on('mouseover', function () {
+      console.log(d3.select(this).datum())
+    })
+    m.push(rect)
   }
   return m
 }

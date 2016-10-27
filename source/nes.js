@@ -1,7 +1,7 @@
 var JSNES = function (opts) {
   this.opts = {
     ui: JSNES.DummyUI,
-    swfPath: 'lib/',
+    // swfPath: 'lib/',
 
     preferredFrameRate: 60,
     fpsInterval: 500, // Time between updating FPS in ms
