@@ -28,6 +28,7 @@ require('./load_romfile.js')(function () {
   window.pollers = {}
   window.dopers = {}
   window.add_poller = add_poller
+  window.add_both = add_both
 
   function add_poller (options) {
     window.pollers[options.addr] = poller(options)
@@ -41,7 +42,10 @@ require('./load_romfile.js')(function () {
     add_poller(options)
   }
 
-  // add_poller({ name: 'current probe', addr: 1698 })
+  // add_poller({ name: 'current probe', addr: 235 })
+  // add_both({ name: 'unknown', addr: 235, value: 19 })
+  // add_both({ name: 'unknown', addr: 235, value: 85, ring: d3.range(0, 0), padding: 1 })
+  // add_both({ name: 'unknown', addr: 844, value: 85, ring: d3.range(0, 255), padding: 1 })
 
   // add_both({ name: 'unknown', addr: 1020, value: 85 })
   // add_both({ name: 'unknown', addr: 1021, value: 255 })
@@ -52,7 +56,7 @@ require('./load_romfile.js')(function () {
   // add_both({ name: 'unknown', addr: 1922, value: 24 })
 
   // found hacks
-
+  // add_both({ name: 'mario fall rate', addr: 1802, value: 2 })
   // add_both({ name: 'player position y', addr: 0xCE, value: 32 })
 
   // add_doper({ name: 'enemy 0 type', addr: 0x0016, value: 0x01 })
@@ -68,6 +72,7 @@ require('./load_romfile.js')(function () {
   // add_both({ name: 'disable jump', addr: 1075, value: 255 })
   // add_both({ name: 'player x speed', addr: 1110, value: 64 })
   // add_both({ name: 'mario draw state', addr: 1749, value: 24 })
+
   // add_both({ name: 'lock clock', addr: 1927, value: 24, })  // change to any value to lock the clock value
   // add_both({ name: 'smash the world up', addr: 159, value: 246 })
   // add_both({ name: 'what_block_loaded_0', addr: 1697, value: 12 })
@@ -82,7 +87,7 @@ require('./load_romfile.js')(function () {
   // add_both({ name: 'what_block_loaded_9', addr: 1706, value: 12 })
   // add_both({ name: 'what_block_loaded_10', addr: 1707, value: 12 })
   // add_both({ name: 'what_block_loaded_11', addr: 1708, value: 12 })
-  add_both({ name: 'what_block_loaded_12', addr: 1709, value: 32 })
+  // add_both({ name: 'what_block_loaded_12', addr: 1709, value: 32 })
 
   window.memory_changes = []
 

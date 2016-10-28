@@ -37,6 +37,10 @@ function draw_memory () {
     rect.on('mouseover', function () {
       console.log(d3.select(this).datum())
     })
+    rect.on('click', function () {
+      var i = d3.select(this).datum()
+      window.add_both({ name: 'unknown ' + i, addr: i, value: 0 })
+    })
     m.push(rect)
   }
   return m

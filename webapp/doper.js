@@ -11,6 +11,15 @@ module.exports = function doper (options) {
   var value = options.value
   var isRunning = true
 
+  var type = ''
+  var ring = []
+  var ring_index = 0
+
+  if (options.ring !== undefined) {
+    type = 'ring'
+    loadring(options)
+  }
+
   var div_parent = d3.select('div#dopers').append('div')
   div_parent.style('display', 'inline-block')
   div_parent.style('background-color', 'rgba(255,0,0,0.1)')
@@ -68,11 +77,33 @@ module.exports = function doper (options) {
     isRunning = false
     div_parent.style('background-color', 'rgba(255,0,0,0.1)')
   }
-
+  function v () {
+    if (type === 'ring') {
+      ring_index += 1
+      ring_index = ring_index % ring.length
+      value = ring[ring_index]
+      input.property('value', value)
+    }
+    return value
+  }
+  function loadring (options) {
+    ring_index = 0
+    if (options.padding !== undefined) {
+      ring = []
+      options.ring.forEach(function (v) {
+        for (var i = 0; i < options.padding; i++) {
+          ring.push(v)
+        }
+      })
+    } else {
+      ring = options.ring
+    }
+  }
   return {
     start: start,
     stop: stop,
     status: function () { return isRunning },
-    value: function () { return value }
+    value: v,
+    loadring: loadring
   }
 }
