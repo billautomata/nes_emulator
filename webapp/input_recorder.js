@@ -71,6 +71,9 @@ module.exports = function input_recorder () {
   div_controls.append('button').html('stop').on('click', function () {
     stop()
   })
+  div_controls.append('button').html('write to disk').on('click', function () {
+    save()
+  })
   div_controls.append('button').html('reset nes').on('click', function () {
     window.nes.reloadRom()
   })

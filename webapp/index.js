@@ -12,7 +12,11 @@ var input_recorder = require('./input_recorder.js')()
 window.i = input_recorder
 
 if (window.localStorage.getItem('input_dvr') === null) {
-  window.localStorage.setItem('input_dvr', JSON.stringify(require('../runs/another_run.json')))
+  window.localStorage.setItem('input_dvr', JSON.stringify(require('../runs/test.json')))
+}
+
+window.get_recording = function () {
+  return JSON.stringify(window.localStorage.getItem('input_dvr'))
 }
 
 var draw_memory = true
