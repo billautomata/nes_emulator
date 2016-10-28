@@ -6,6 +6,16 @@ function draw_memory () {
   var n_memory_elements = 2048 // 2k
   var mem_width = 64
   var div_memory = d3.select('div#memory')
+
+  div_memory.append('button')
+    .datum({clicked: false})
+    .html('draw memory')
+    .on('click', function () {
+      var v = d3.select(this).datum().clicked
+      d3.select(this).datum().clicked = !v
+      window.draw_memory = d3.select(this).datum().clicked
+    })
+
   var svg = div_memory.append('svg')
     .attr('viewBox', [0, 0, mem_width, n_memory_elements / mem_width].join(' '))
     .attr('preserveApsectRatio', 'xMidYMid')

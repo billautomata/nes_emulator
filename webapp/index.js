@@ -12,7 +12,7 @@ var input_recorder = require('./input_recorder.js')()
 window.i = input_recorder
 
 if (window.localStorage.getItem('input_dvr') === null) {
-  window.localStorage.setItem('input_dvr', JSON.stringify(require('../runs/example_run.json')))
+  window.localStorage.setItem('input_dvr', JSON.stringify(require('../runs/another_run.json')))
 }
 
 var draw_memory = true
@@ -37,7 +37,7 @@ require('./load_romfile.js')(function () {
     add_poller(options)
   }
 
-  add_poller({ name: 'current probe', addr: 1110 })
+  // add_poller({ name: 'current probe', addr: 1698 })
 
   // add_both({ name: 'unknown', addr: 1020, value: 85 })
   // add_both({ name: 'unknown', addr: 1021, value: 255 })
@@ -66,49 +66,46 @@ require('./load_romfile.js')(function () {
   // add_both({ name: 'mario draw state', addr: 1749, value: 24 })
   // add_both({ name: 'lock clock', addr: 1927, value: 24, })  // change to any value to lock the clock value
   // add_both({ name: 'smash the world up', addr: 159, value: 246 })
-
-  // add_doper({
-  //   name: 'power up state',
-  //   addr: 0x756,
-  //   value: 0x3
-  // })
+  // add_both({ name: 'what_block_loaded_0', addr: 1697, value: 12 })
+  // add_both({ name: 'what_block_loaded_1', addr: 1698, value: 12 })
+  // add_both({ name: 'what_block_loaded_2', addr: 1699, value: 12 })
+  // add_both({ name: 'what_block_loaded_3', addr: 1700, value: 12 })
+  // add_both({ name: 'what_block_loaded_4', addr: 1701, value: 12 })
+  // add_both({ name: 'what_block_loaded_5', addr: 1702, value: 12 })
+  // add_both({ name: 'what_block_loaded_6', addr: 1703, value: 12 })
+  // add_both({ name: 'what_block_loaded_7', addr: 1704, value: 12 })
+  // add_both({ name: 'what_block_loaded_8', addr: 1705, value: 12 })
+  // add_both({ name: 'what_block_loaded_9', addr: 1706, value: 12 })
+  // add_both({ name: 'what_block_loaded_10', addr: 1707, value: 12 })
+  // add_both({ name: 'what_block_loaded_11', addr: 1708, value: 12 })
+  add_both({ name: 'what_block_loaded_12', addr: 1709, value: 32 })
 
   window.memory_changes = []
 
   window.i.load()
   window.i.play()
-  window.i.ffw(150)
-  // window.i.off()
-  // window.i.pause()
+  // window.i.ffw(150)
 
   tick()
   // setInterval(tick, 16)
   function tick () {
     stats.begin()
-    var n_frames_per_tick = 4
+    var n_frames_per_tick = 1
     while(n_frames_per_tick--){
-      if (input_recorder.active()) {
-        window.memory_changes = []
-        input_recorder.tick()
-
-        window.nes.frame()
-
-        window.memory_changes.forEach(function (c) {
-          var address = c[1]
-          // console.log(address)
-          if (window.pollers[address] !== undefined) {
-            window.pollers[address](c[2])
-          }
-        })
-        if (draw_memory) {
-          m.forEach(function (m, i) {
-            m.attr('fill', d3.rgb(window.nes.cpu.mem[i], window.nes.cpu.mem[i], window.nes.cpu.mem[i]))
-          })
+      window.memory_changes = []
+      input_recorder.tick()
+      // iterate over the memory changes and update the appropriate pollers
+      window.memory_changes.forEach(function (c) {
+        var address = c[1]
+        if (window.pollers[address] !== undefined) {
+          window.pollers[address](c[2])
         }
-      } else {
-        window.nes.frame()
+      })
+      if (window.draw_memory) {
+        m.forEach(function (m, i) {
+          m.attr('fill', d3.rgb(window.nes.cpu.mem[i], window.nes.cpu.mem[i], window.nes.cpu.mem[i]))
+        })
       }
-
     }
     stats.end()
     window.requestAnimationFrame(tick)

@@ -1096,8 +1096,7 @@ JSNES.CPU.prototype = {
 
   load16bit: function (addr) {
     if (addr < 0x1FFF) {
-      return this.mem[addr & 0x7FF]
-      | (this.mem[(addr + 1) & 0x7FF] << 8)
+      return (this.mem[addr & 0x7FF] | (this.mem[(addr + 1) & 0x7FF] << 8))
     } else {
       return this.nes.mmap.load(addr) | (this.nes.mmap.load(addr + 1) << 8)
     }
