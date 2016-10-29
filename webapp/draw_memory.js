@@ -37,7 +37,13 @@ function draw_memory () {
     'The value of the probe should be locked to the value set with the slider, indicating the memory is being replaced by your custom value.',
     'To record your own run...',
     'You need to stop the run that is currently playing..',
-    'Press [stop] > [is loading inputs] > [reset nes] > [record] > play your run > [stop] > [write to disk] > [restart]'
+    'Press [stop] > [is loading inputs] > [reset nes] > [record] > play your run > [stop] > [write to disk] > [restart]',
+    'Controls:',
+    'Left / Right / Up / Down : Directional Keys',
+    'A : x',
+    'B : z',
+    'Start : Enter',
+    'Select: Ctrl'
   ].join('<br><br>')
 
   var div_explain = div_memory.append('div')
