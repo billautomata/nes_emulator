@@ -2,6 +2,7 @@ var d3 = require('d3')
 var Stats = require('stats.js')
 var stats = new Stats()
 stats.showPanel(0)
+window.stats = stats
 document.body.appendChild(stats.dom)
 
 require('./utils.js')
