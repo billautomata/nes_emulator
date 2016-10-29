@@ -4,37 +4,45 @@
     <!-- <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> -->
     <title>nes emulator</title>
     <style>
+      body {
+        font-family: monospace;
+      }
       .nes-screen {
         width: 100%;
       }
       #memory {
         width: 49%;
-        float: right;
+        display: inline-block;
+        vertical-align: top;
       }
       #emulator {
-        width: 50%;
-        float: left;
+        width: 49%;
+        display: inline-block;
       }
       #input_recorder {
-        width: 49%;
-        float: right;
+        width: 100%;
         margin-bottom: 10px;
         padding-bottom: 4px;
         background-color: rgba(0,0,0,0.1);
       }
       #dopers {
-        width: 49%;
-        float: right;
+        width: 100%;
       }
     </style>
 </head>
 
 <body>
 
-    <div id="memory"></div>
-    <div id="emulator"></div>
-    <div id='input_recorder'></div>
-    <div id='dopers'></div>
+    <div style='width:100%'>
+      <div id="emulator">
+      <div id='input_recorder'></div></div>
+      <div id="memory">
+      </div>
+
+    </div>
+    <div style='display: block; width:100%'>
+      <div id='dopers'></div>
+    </div>
 
     <!-- <h2>Controls</h2>
     <table id="controls">

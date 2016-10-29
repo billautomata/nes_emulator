@@ -51,7 +51,7 @@ require('./load_romfile.js')(function () {
   // found hacks
   // add_both({ name: 'mario fall rate', addr: 1802, value: 2 })
   // add_both({ name: 'player position y', addr: 0xCE, value: 32, active: false })
-  add_both({ name: 'god mode', addr: 0x9, value: 255, active: false })
+  // add_both({ name: 'god mode', addr: 0x9, value: 255, active: false })
 
   // add_doper({ name: 'enemy 0 type', addr: 0x0016, value: 0x01 })
   // add_doper({ name: 'enemy 1 type', addr: 0x0017, value: 0x01 })
@@ -122,6 +122,10 @@ require('./load_romfile.js')(function () {
       if (window.draw_memory) {
         m.forEach(function (m, i) {
           m.attr('fill', d3.rgb(window.nes.cpu.mem[i], window.nes.cpu.mem[i], window.nes.cpu.mem[i]))
+          m.attr('stroke', 'none')
+        })
+        window.memory_changes.forEach(function (c) {
+          m[c[1]].attr('stroke', 'blue')
         })
       }
     }
