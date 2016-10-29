@@ -21,31 +21,30 @@ module.exports = function doper (options) {
   }
 
   var div_parent = d3.select('div#dopers').append('div')
-  div_parent.style('display', 'inline-block')
+  div_parent.style('width', '100%')
   div_parent.style('background-color', 'rgba(255,0,0,0.1)')
 
   div_parent.append('div').html(options.name)
   div_parent.append('div').html(['addr', options.addr.toString(10)].join(' '))
   var input = div_parent.append('input')
-    .attr('type', 'text')
+    .attr('type', 'range')
+    .attr('min', '0')
+    .attr('max', '255')
+    .attr('step', '1')
     .property('value', options.value)
+    .style('width', '100%')
 
-  input.on('keydown', function () {
-    if (d3.event.code === 'Enter') {
-      value = input.property('value')
-    }
+  input.on('input', function () {
+    value = d3.select(this).property('value')
   })
 
-  // input.on('click', function () {
-  // d3.event.stopPropagation()
-  // d3.event.preventDefault()
-  // })
-
-  div_parent.append('button').html('x').on('click', function () {
+  div_parent.append('button').html('activate').on('click', function () {
     if (isRunning) {
       stop()
+      d3.select(this).html('activate')
     } else {
       start()
+      d3.select(this).html('deactivate')
     }
   })
 
@@ -56,6 +55,14 @@ module.exports = function doper (options) {
   div_parent.append('button').html('+').on('click', function () {
     value = Number(value) + 1
     input.property('value', value)
+  })
+  div_parent.append('button').html('remove').on('click', function () {
+    div_parent.selectAll('*').remove()
+    div_parent.remove()
+    d3.select('svg#_' + addr).selectAll('*').remove()
+    d3.select('svg#_' + addr).remove()
+    window.pollers[addr] = undefined
+    window.dopers[addr] = undefined
   })
 
   if (options.active !== undefined) {

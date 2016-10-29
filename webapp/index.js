@@ -19,7 +19,8 @@ window.get_recording = function () {
   return JSON.stringify(window.localStorage.getItem('input_dvr'))
 }
 
-var draw_memory = true
+// var draw_memory = true
+window.n_ticks = 1
 
 require('./load_romfile.js')(function () {
   // main function
@@ -43,21 +44,14 @@ require('./load_romfile.js')(function () {
   }
 
   // add_poller({ name: 'current probe', addr: 235 })
-  // add_both({ name: 'unknown', addr: 235, value: 19 })
-  // add_both({ name: 'unknown', addr: 235, value: 85, ring: d3.range(0, 0), padding: 1 })
-  // add_both({ name: 'unknown', addr: 844, value: 85, ring: d3.range(0, 255), padding: 1 })
-
-  // add_both({ name: 'unknown', addr: 1020, value: 85 })
-  // add_both({ name: 'unknown', addr: 1021, value: 255 })
-  // add_both({ name: 'unknown', addr: 1023, value: 85 })
-  // add_both({ name: 'unknown', addr: 1024, value: 85 })
 
   // crap
   // add_both({ name: 'unknown', addr: 1922, value: 24 })
 
   // found hacks
   // add_both({ name: 'mario fall rate', addr: 1802, value: 2 })
-  // add_both({ name: 'player position y', addr: 0xCE, value: 32 })
+  // add_both({ name: 'player position y', addr: 0xCE, value: 32, active: false })
+  add_both({ name: 'god mode', addr: 0x9, value: 255, active: false })
 
   // add_doper({ name: 'enemy 0 type', addr: 0x0016, value: 0x01 })
   // add_doper({ name: 'enemy 1 type', addr: 0x0017, value: 0x01 })
@@ -66,6 +60,7 @@ require('./load_romfile.js')(function () {
   // add_doper({ name: 'enemy 4 type', addr: 0x001A, value: 0x01 })
   // add_doper({ name: 'powerup on screen', addr: 0x1B, value: 0x00, active: false })
   // add_doper({ name: 'all powerups star', addr: 0x0039, value: 0x02, active: false })
+  // add_both({ name: 'smash the world up', addr: 159, value: 246 })
   // add_both({ name: 'sprite x position', addr: 942, value: 96 })
   // add_both({ name: 'awesome colors', addr: 1021, value: 255 })
   // add_both({ name: 'awesome colors', addr: 1022, value: 248 })
@@ -74,8 +69,10 @@ require('./load_romfile.js')(function () {
   // add_both({ name: 'mario draw state', addr: 1749, value: 24 })
 
   // add_both({ name: 'lock clock', addr: 1927, value: 24, })  // change to any value to lock the clock value
-  // add_both({ name: 'smash the world up', addr: 159, value: 246 })
-  // add_both({ name: 'what_block_loaded_0', addr: 1697, value: 12 })
+
+  // memory address 9 = flashing speed of icons
+
+  // add_both({ name: 'what_block_loaded_0', addr: 1697, value: 12, active: false })
   // add_both({ name: 'what_block_loaded_1', addr: 1698, value: 12 })
   // add_both({ name: 'what_block_loaded_2', addr: 1699, value: 12 })
   // add_both({ name: 'what_block_loaded_3', addr: 1700, value: 12 })
@@ -95,11 +92,23 @@ require('./load_romfile.js')(function () {
   window.i.play()
   // window.i.ffw(150)
 
+  var input = d3.select('div#emulator').append('input')
+    .attr('type', 'range')
+    .attr('min', '1')
+    .attr('max', '10')
+    .attr('step', '1')
+    .property('value', window.n_ticks)
+    .style('width', '100%')
+
+  input.on('input', function () {
+    window.n_ticks = d3.select(this).property('value')
+  })
+
   tick()
   // setInterval(tick, 16)
   function tick () {
     stats.begin()
-    var n_frames_per_tick = 1
+    var n_frames_per_tick = window.n_ticks
     while(n_frames_per_tick--){
       window.memory_changes = []
       input_recorder.tick()

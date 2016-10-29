@@ -39,7 +39,7 @@ function draw_memory () {
     })
     rect.on('click', function () {
       var i = d3.select(this).datum()
-      window.add_both({ name: 'unknown ' + i, addr: i, value: 0 })
+      window.add_both({ name: i, addr: i, value: 0, active: false })
     })
     m.push(rect)
   }

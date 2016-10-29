@@ -16,11 +16,12 @@ function poller (options) {
 
   var w = options.n_samples
   var h = 6
-  var svg = d3.select('body').append('svg')
+  var svg = d3.select('div#dopers').append('svg')
     .attr('viewBox', [ 0, 0, w, h ].join(' '))
     .attr('preserveApsectRatio', 'xMidYMid')
     .attr('width', '100%')
     .style('outline', '1px solid black')
+    .attr('id', '_' + options.addr)
 
   var txt = svg.append('text').text(options.name)
     .attr('x', 1)
