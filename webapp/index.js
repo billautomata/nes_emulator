@@ -72,7 +72,7 @@ require('./load_romfile.js')(function () {
 
   // memory address 9 = flashing speed of icons
 
-  // add_both({ name: 'what_block_loaded_0', addr: 1697, value: 12, active: false })
+  add_both({ name: 'custom block', addr: 1697, value: 12, active: false })
   // add_both({ name: 'what_block_loaded_1', addr: 1698, value: 12 })
   // add_both({ name: 'what_block_loaded_2', addr: 1699, value: 12 })
   // add_both({ name: 'what_block_loaded_3', addr: 1700, value: 12 })
