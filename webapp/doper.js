@@ -20,23 +20,23 @@ module.exports = function doper (options) {
     loadring(options)
   }
 
-  var div_parent = d3.select('div#dopers').append('div')
+  var div_parent
+
+  if (options.parent === undefined) {
+    div_parent = d3.select('div#dopers').append('div')
+  } else {
+    div_parent = options.parent
+  }
+
+  div_parent = div_parent.append('div')
   div_parent.style('width', '100%')
-  div_parent.style('background-color', 'rgba(255,0,0,0.1)')
+    .style('background-color', 'rgba(255,0,0,0.1)')
+    .style('padding-top', '2px')
 
-  div_parent.append('div').html(options.name)
-  div_parent.append('div').html(['addr', options.addr.toString(10)].join(' '))
-  var input = div_parent.append('input')
-    .attr('type', 'range')
-    .attr('min', '0')
-    .attr('max', '255')
-    .attr('step', '1')
-    .property('value', options.value)
-    .style('width', '100%')
+  div_parent.append('div').html([options.name, ['addr', options.addr.toString(10)].join(' ')].join('-')).style('font-size', '10px')
 
-  input.on('input', function () {
-    value = d3.select(this).property('value')
-  })
+  var div_value = div_parent.append('div')
+    .attr('class', 'doper-value').html(value)
 
   div_parent.append('button').html('activate').on('click', function () {
     if (isRunning) {
@@ -51,10 +51,12 @@ module.exports = function doper (options) {
   div_parent.append('button').html('-').on('click', function () {
     value = Number(value) - 1
     input.property('value', value)
+    div_value.html(value)
   })
   div_parent.append('button').html('+').on('click', function () {
     value = Number(value) + 1
     input.property('value', value)
+    div_value.html(value)
   })
   div_parent.append('button').html('remove').on('click', function () {
     div_parent.selectAll('*').remove()
@@ -63,6 +65,19 @@ module.exports = function doper (options) {
     d3.select('svg#_' + addr).remove()
     window.pollers[addr] = undefined
     window.dopers[addr] = undefined
+  })
+
+  var input = div_parent.append('input')
+    .attr('type', 'range')
+    .attr('min', '0')
+    .attr('max', '255')
+    .attr('step', '1')
+    .property('value', options.value)
+    .style('width', '98%')
+
+  input.on('input', function () {
+    value = d3.select(this).property('value')
+    div_value.html(value)
   })
 
   if (options.active !== undefined) {

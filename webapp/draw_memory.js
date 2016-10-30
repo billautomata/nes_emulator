@@ -28,7 +28,7 @@ function draw_memory () {
   // var scale_x = d3.scaleLinear().domain([0, mem_width]).range([])
 
   var howthisworks = ''
-  howthisworks += '<h4>how this works</h4>'
+  howthisworks += '<p style="font-weight: 900">how this works (scroll down for more info)</p>'
   howthisworks += ['Click [draw memory].  That renders the memory layout of the first 2048 bytes of the NES above. ',
     'The values are the brightness of the rectangle, and a blue stroke indicates that memory address is active. ',
     'Click the memory address to add a probe and a doper.  The probe will update whenever the value is read.  ',
@@ -49,6 +49,8 @@ function draw_memory () {
   var div_explain = div_memory.append('div')
     .style('max-height', '100px')
     .style('overflow-y', 'scroll')
+    .style('background-color', 'rgb(230,240,240)')
+    .style('padding', '10px')
     .html(howthisworks)
 
   var m = []
@@ -67,7 +69,8 @@ function draw_memory () {
     })
     rect.on('click', function () {
       var i = d3.select(this).datum()
-      window.add_both({ name: i, addr: i, value: 0, active: false })
+
+      window.add_both({ name: i, addr: i, value: 0, active: false, parent: d3.select('div#dopers').append('div').attr('class', 'doper_container') })
     })
     m.push(rect)
   }

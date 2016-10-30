@@ -7,29 +7,40 @@ function poller (options) {
   // options.addr
   // options.n_samples
   if (options.n_samples === undefined) {
-    options.n_samples = 32
+    options.n_samples = 16
   }
   var samples = new Uint8Array(options.n_samples)
   var current_sample_idx = 0
 
   console.log('adding poller')
 
+  var div_parent
+
+  if (options.parent === undefined) {
+    div_parent = d3.select('div#dopers')
+  } else {
+    div_parent = options.parent
+  }
+
+  div_parent = div_parent.append('div').style('padding', '2px')
+
   var w = options.n_samples
-  var h = 6
-  var svg = d3.select('div#dopers').append('svg')
+  var h = 4
+  var svg = div_parent.append('svg')
     .attr('viewBox', [ 0, 0, w, h ].join(' '))
     .attr('preserveApsectRatio', 'xMidYMid')
     .attr('width', '100%')
-    .style('outline', '1px solid black')
+    .style('outline', '1px solid rgb(222,222,202)')
+    .style('background-color', '1px solid rgb(222,222,225)')
     .attr('id', '_' + options.addr)
 
   var txt = svg.append('text').text(options.name)
-    .attr('x', 1)
-    .attr('y', 1)
-    .attr('font-size', '1px')
+    .attr('x', 0.1)
+    .attr('y', 0.6)
+    .attr('font-size', '0.5px')
 
   var scale_x = d3.scaleLinear().domain([0, options.n_samples]).range([1, w])
-  var scale_y = d3.scaleLinear().domain([0, 255]).range([h - 1, 1])
+  var scale_y = d3.scaleLinear().domain([0, 255]).range([h - (h * 0.15), (h * 0.15)])
 
   var circles = []
   var values = []

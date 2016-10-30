@@ -4,6 +4,8 @@ var stats = new Stats()
 stats.showPanel(0)
 window.stats = stats
 document.body.appendChild(stats.dom)
+stats.domElement.style.left = stats.domElement.style.top = null
+stats.domElement.style.bottom = stats.domElement.style.right = '0px'
 
 require('./utils.js')
 var poller = require('./logic_analyzer.js').poller
@@ -13,7 +15,7 @@ var input_recorder = require('./input_recorder.js')()
 window.i = input_recorder
 
 if (window.localStorage.getItem('input_dvr') === null) {
-  window.localStorage.setItem('input_dvr', JSON.stringify(require('../runs/test.json')))
+  window.localStorage.setItem('input_dvr', JSON.stringify(require('../runs/example_run.json')))
 }
 
 window.get_recording = function () {
@@ -40,6 +42,9 @@ require('./load_romfile.js')(function () {
     window.dopers[options.addr] = d
   }
   function add_both (options) {
+    if (options.parent === undefined) {
+      options.parent = d3.select('div#dopers').append('div').attr('class', 'doper_container')
+    }
     add_doper(options)
     add_poller(options)
   }
@@ -73,7 +78,7 @@ require('./load_romfile.js')(function () {
 
   // memory address 9 = flashing speed of icons
 
-  add_both({ name: 'custom block', addr: 1697, value: 12, active: false })
+  add_both({ name: 'bg-sprite', addr: 1697, value: 12, active: false })
   // add_both({ name: 'what_block_loaded_1', addr: 1698, value: 12 })
   // add_both({ name: 'what_block_loaded_2', addr: 1699, value: 12 })
   // add_both({ name: 'what_block_loaded_3', addr: 1700, value: 12 })
