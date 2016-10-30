@@ -9,7 +9,7 @@ module.exports = function doper (options) {
   var name = options.name
   var addr = options.addr
   var value = options.value
-  var isRunning = true
+  var isRunning = options.active
 
   var type = ''
   var ring = []
@@ -33,12 +33,21 @@ module.exports = function doper (options) {
     .style('background-color', 'rgba(255,0,0,0.1)')
     .style('padding-top', '2px')
 
-  div_parent.append('div').html([options.name, ['addr', options.addr.toString(10)].join(' ')].join('-')).style('font-size', '10px')
+  div_parent.append('div')
+    .html([options.name, ['addr', options.addr.toString(10)].join(' ')].join('-')).style('font-size', '10px')
 
   var div_value = div_parent.append('div')
     .attr('class', 'doper-value').html(value)
 
-  div_parent.append('button').html('activate').on('click', function () {
+  div_parent.append('button').html(function () {
+    if (isRunning) {
+      start()
+      return 'deactivate'
+    } else {
+      stop()
+      return 'activate'
+    }
+  }).on('click', function () {
     if (isRunning) {
       stop()
       d3.select(this).html('activate')
@@ -80,17 +89,6 @@ module.exports = function doper (options) {
     div_value.html(value)
   })
 
-  if (options.active !== undefined) {
-    isRunning = options.active
-  } else {
-    start()
-  }
-
-  // function tick () {
-  // if (isRunning) {
-  //   window.nes.cpu.mem[addr] = value
-  // }
-  // }
   function start () {
     div_parent.style('background-color', 'rgba(0,255,0,0.1)')
     isRunning = true
